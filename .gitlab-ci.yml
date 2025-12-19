@@ -1,0 +1,19 @@
+stages:
+  - build
+  - security
+
+check_project:
+  stage: build
+  image: alpine:latest
+  script:
+    - echo "Vérification du projet"
+    - test -f index.html
+
+trivy_scan:
+  stage: security
+  image:
+    name: aquasec/trivy:latest
+    entrypoint: [""]
+  script:
+    - trivy fs --severity HIGH,CRITICAL .
+  allow_failure: true
